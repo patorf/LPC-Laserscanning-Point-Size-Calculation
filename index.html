@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width = device-width, initial-scale = 1">
+		<title>LPC</title>
+		<script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<style type="text/css" media="screen">
+			#draw_canvas{
+			
+				
+			}
+		</style>
+	</head>
+	
+	<body>
+		<script src="js/bootstrap.min.js"></script>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-6 bg-danger" >
+				<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#setting_div">
+					Settings
+				</button>
+				<div id="setting_div" class="collapse">
+				
+				
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	
+				</div>
+				
+				</div>
+				<div class="col-lg-6 col-md-6 bg-info" id="draw_canvas">
+					<canvas id="canvas" width="300" height="300">
+					Sorry, your browser doesn't support the &lt;canvas&gt; element.
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	var c=document.getElementById("canvas");
+	var ctx=c.getContext("2d");
+	ctx.beginPath();
+	ctx.arc(100,75,50,0,2*Math.PI);
+	ctx.stroke();
+	</script>
+</html>
