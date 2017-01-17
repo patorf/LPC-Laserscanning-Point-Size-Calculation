@@ -7,6 +7,8 @@
 		<title>LPC</title>
 		<script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.0/bootstrap-slider.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.0/css/bootstrap-slider.css">
 		<style type="text/css" media="screen">
 			#draw_canvas{
 			
@@ -20,21 +22,38 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-md-6 bg-danger" >
-				<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#setting_div">
+					<button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#setting_div">
 					Settings
-				</button>
-				<div id="setting_div" class="collapse">
-				
-				
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-	
-				</div>
-				
+					</button>
+					<div id="setting_div" class="form-group container-fluid ">
+						
+						<div class="row">
+							<label for="scanner_id" >Scanner</label>
+							<select class="form-control" id="scanner_id">
+								<option>Leica P20</option>
+								<option>Faro Focus 350</option>
+							</select>
+							<b>Resolution @10m </b>
+							<input  type="text"
+							style="width:100%"
+							
+							id="resolution_slider"
+							data-slider-min="0"
+							data-slider-max="150"
+							data-slider-step="10"
+							/>
+							
+							
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+						</div>
+					</div>
+					
 				</div>
 				<div class="col-lg-6 col-md-6 bg-info" id="draw_canvas">
 					<canvas id="canvas" width="300" height="300">
@@ -44,10 +63,21 @@
 		</div>
 	</body>
 	<script type="text/javascript">
+	var slider_change = function(){
+		circle_size=resolution_slider.bootstrapSlider('getValue');
+		redraw_canvas();
+	}
+	var circle_size = 10;
+	var resolution_slider = $("#resolution_slider").bootstrapSlider()
+				.on('slide', slider_change);
+	var redraw_canvas = function(){
 	var c=document.getElementById("canvas");
 	var ctx=c.getContext("2d");
+	ctx.clearRect(0,0, c.width,c.height)
 	ctx.beginPath();
-	ctx.arc(100,75,50,0,2*Math.PI);
-	ctx.stroke();
+	ctx.arc(100,75,circle_size,0,2*Math.PI);
+		ctx.stroke();
+	}
+	
 	</script>
 </html>
