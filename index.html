@@ -15,6 +15,7 @@
 		<style >
 			#canvas{
 				background-color: white;
+				
 
 			}
 
@@ -62,12 +63,7 @@
 							/>
 							
 							
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+							
 						</div>
 					</div>
 					
@@ -174,13 +170,21 @@
 	distance_slider.bootstrapSlider('setValue', distance)
 	zoom= 2
 	var redraw_canvas = function(){
+
+
 		var c=document.getElementById("canvas");
+		console.log("Canvas height old",c.height)
+		//c.width = $("#draw_canvas").width()
+
+		//c.height = $("#draw_canvas").innerHeight()
+		console.log("Canvas height new",c.height)
+
 		//aspect ration from canvas to maximal diameter of a spot
 		canvas_size_to_distance = c.width/calc_spotSize_at_distance(150) 
 		
 		canvas_size_to_distance *=  zoom
 		
-
+		console.log(c.width)
 		spot_size_m = calc_spotSize_at_distance(distance)
 		
 		radius_m = spot_size_m /2
