@@ -12,217 +12,83 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.0/css/bootstrap-slider.css">
 		
 		<script src="scanner.js"></script>
+
 		<style >
+			.canvas_col{min-height: 600px}
 			#canvas{
 				background-color: white;
-				
 
+				
 			}
 
 		</style>
-
 	</head>
 	
 	<body>
 		<script src="js/bootstrap.min.js"></script>
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-6 col-md-6 bg-danger" >
-					<button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#setting_div">
+				
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-info" >
+					<!-- <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#setting_div">
 					Settings
-					</button>
-					<div id="setting_div" class="form-group container-fluid ">
+					</button> -->
+					<h1>LPC</h1>
+					<div id="setting_div" class="form-group container-fluid disabled" disabled="disabled">
 						
 						<div class="row">
-							<label for="scanner_id" >Scanner</label>
+							<label for="scanner_id" >Select your Scanner</label>
 							<select class="form-control" id="scanner_selection">
 								<option value="" disabled selected>Select your Scanner</option>}
 								
 							</select>
-							<b>Resolution [mm] @10m  </b>
+
+							<b>Resolution [mm] @10m</b><b id="reolution_display"></b>
 							<input  type="text"
 							//style="width:100%"
 							id="resolution_slider"
-							
+							data-slider-value = "0"
 							data-slider-ticks-snap-bounds= "50"
 							//data-slider-step="0.8"
 							data-slider-ticks="[0,25,50]"
 							//data-slider-scale = "logarithmic"
 							data-slider-scale = "linear"
 							/>
-
-							<b>Distance [m]</b>
+							<b>Distance [m]</b><b id="distance_display"></b>
 							<input  type="text"
 							style="width:100%"
 							id="distance_slider"
-							data-slider-min="0"
+							data-slider-min="1"
 							data-slider-max="150"
 							data-slider-step="1"
 							data-slider-scale = "logarithmic"
-
-							/>
+							data_slider-value = "1"
 							
+							/>
+							<p class="text-right">
+							<b >Object Resolution: </b><b id='object_res_display'></b>
+							<br>
+							<b>Spot Size: </b><b id='spot_size'></b>
+							</p>
 							
 							
 						</div>
 					</div>
 					
 				</div>
-				<div class="col-lg-6 col-md-6 bg-info" id="draw_canvas">
-					<canvas id="canvas" width="300" height="300">
+				<div class="canvas_col col-lg-6 col-md-6 col-sm-5 col-xs-12 " >
+					<canvas id="canvas" width="350" height="350">
 					Sorry, your browser doesn't support the &lt;canvas&gt; element.
 				</div>
 			</div>
 		</div>
+
+
+		<script src="js/lpc.js"></script>
+
 	</body>
 	<script type="text/javascript">
-	var distance = 10
-	var resolution = 3// mm @10m
-	var selectet_scanner_id = null;
-	var resolution_changed = function(event){
-
-		console.log('resolution_changed')
-		resolution=event.value.newValue;
-		redraw_canvas();
-	}
-	var distace_changed = function(){
-		distance=distance_slider.bootstrapSlider('getValue');
-		redraw_canvas();
-	}
-	$('#scanner_selection').on('change', function() {
 	
-		selectet_scanner_id =  Number($(this).find(":selected").val()) ;
-		update_scanner_view()
-	});
-
-	var calc_spotSize_at_distance = function(dist){
-		//Strahldivergenz nach Spotgröße am Objekt umrechnen 
-		current_scanner = get_current_scanner();
-		beam_divergence = current_scanner["beam_divergence [mrad]"];
-		beam_diameter  = current_scanner["beam_diameter [mm]"]
-    	var alpha = beam_divergence /1000 // mrad to rad
-    	var d_m = beam_diameter /1000 // m to mm
-    	r = dist
-    	
-	    // http://handwerkerinfos-bgbau.de/tr/tros_2/anl2.htm
-	    spot_size_m = d_m + 2 * r * Math.tan(alpha/2)
-	    console.log("Spot_Size [mm]",spot_size_m *1000)
-	    return spot_size_m 
-	}
-
-	var calc_reesolution_at_distance = function(dist){
-		beta_rad = resolution / 1000 /10 // mm to m and than m to rad
-		resolution_at_scan_distance = dist * beta_rad; //m
-		console.log("Resolution at Distacne [mm]",resolution_at_scan_distance*1000)
-		return resolution_at_scan_distance
-	}
-
-	var calc_center_points = function (grid_size, canvas_size){
-		offset = canvas_size /2/grid_size
-		console.log(offset)
-		positions =[offset]
-		for (var i = 0; i < grid_size-1; i++) {
-			positions[i+1] = positions[i] + offset *2
-		}
-		return positions
-
-	}
-
-	var get_current_scanner = function(){
-		return scanner_db.filter(function(index) {
-			return index.id == selectet_scanner_id;
-		})[0];
-	}
-
-	var update_scanner_view = function(){
-		
-		current_scanner = get_current_scanner()
-
-		if (current_scanner["available resolutioin @10m [mm]"]){
 			
-			//resolution_slider.bootstrapSlider("refresh");
-			resolution_slider.bootstrapSlider('destroy');
-			resolution_slider.slider({
-			    ticks: current_scanner["available resolutioin @10m [mm]"],
-			   
-			    ticks_snap_bounds: 400,
-			    scale: 'logarithmic',
-			    value: 0
-			}).on('change', resolution_changed);
-
-		}
-
-	}
-
-
-
-
-	$.each(scanner_db, function(index, val) {
-		$("#scanner_selection").append($("<option />").val(val.id).text(val.name));
-	});
-	
-	//var circle_size = 10;
-	var resolution_slider = $("#resolution_slider").bootstrapSlider()
-				.on('change', resolution_changed);
-	//resolution_slider.bootstrapSlider('setValue',resolution)
-	var distance_slider = $("#distance_slider").bootstrapSlider()
-				.on('change', distace_changed)
-	distance_slider.bootstrapSlider('setValue', distance)
-	zoom= 2
-	var redraw_canvas = function(){
-
-
-		var c=document.getElementById("canvas");
-		console.log("Canvas height old",c.height)
-		//c.width = $("#draw_canvas").width()
-
-		//c.height = $("#draw_canvas").innerHeight()
-		console.log("Canvas height new",c.height)
-
-		//aspect ration from canvas to maximal diameter of a spot
-		canvas_size_to_distance = c.width/calc_spotSize_at_distance(150) 
-		
-		canvas_size_to_distance *=  zoom
-		
-		console.log(c.width)
-		spot_size_m = calc_spotSize_at_distance(distance)
-		
-		radius_m = spot_size_m /2
-		radius_px = radius_m * canvas_size_to_distance  
-
-		resolution_m = calc_reesolution_at_distance(distance)
-		resolution_px = resolution_m * canvas_size_to_distance
-
-		var ctx=c.getContext("2d");
-		ctx.clearRect(0,0, c.width,c.height)
-		//center_positions = calc_center_points(4,c.width);
-		center_positions = [1,2,3,4,5]
-		for (var i = 0; i < center_positions.length; i++) {
-			for (var j = 0; j < center_positions.length; j++) {
-			pos_x = resolution_px * center_positions[i];
-			pos_y = resolution_px * center_positions[j];
-			
-
-			ctx.beginPath();
-			ctx.arc(pos_x,pos_y,radius_px,0,2*Math.PI);
-			ctx.fillStyle = 'green';
-			ctx.globalAlpha = 0.3;
-	      	ctx.fill();
-			ctx.stroke();
-
-			if (i==0 && j ==0){
-				ctx.globalAlpha = 1;
-				ctx.fillStyle = "black"
-				ctx.font ="30px Arial"
-				ctx.fillText("Hallo ", pos_x,pos_y)
-
-			}
-		}
-
-		}
-
-		
-	}
-		
 		</script>
 	</html>
