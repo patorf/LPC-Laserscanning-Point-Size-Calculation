@@ -14,11 +14,19 @@
 		<script src="scanner.js"></script>
 
 		<style >
-			.canvas_col{min-height: 600px}
+			.canvas_col{
+			
+
+
+			}
 			#canvas{
 				background-color: white;
 
 				
+			}
+			.container{
+				padding-left: 30px;
+				padding-right: 30px;
 			}
 
 		</style>
@@ -29,37 +37,38 @@
 		<div class="container">
 			<div class="row">
 				
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-info" >
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-info" >
 					<!-- <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#setting_div">
 					Settings
 					</button> -->
 					<h1>LPC</h1>
-					<div id="setting_div" class="form-group container-fluid disabled" disabled="disabled">
+					<div id="setting_div" class="form-group container-fluid ">
 						
 						<div class="row">
-							<label for="scanner_id" >Select your Scanner</label>
+							<h4 for="scanner_id" >Select your Scanner</h4>
 							<select class="form-control" id="scanner_selection">
 								<option value="" disabled selected>Select your Scanner</option>}
 								
 							</select>
 
-							<b>Resolution [mm] @10m</b><b id="reolution_display"></b>
+							<h4>Resolution [mm] @10m <span id="resolution_display"></span></h4>
 							<input  type="text"
 							//style="width:100%"
 							id="resolution_slider"
-							data-slider-value = "0"
+							
 							data-slider-ticks-snap-bounds= "50"
 							//data-slider-step="0.8"
 							data-slider-ticks="[0,25,50]"
 							//data-slider-scale = "logarithmic"
 							data-slider-scale = "linear"
 							/>
-							<b>Distance [m]</b><b id="distance_display"></b>
+
+							<h4>Distance [m] <span id="distance_display"></span></h4>
 							<input  type="text"
 							style="width:100%"
 							id="distance_slider"
-							data-slider-min="1"
-							data-slider-max="150"
+							data-slider-min="2"
+							data-slider-max="140"
 							data-slider-step="1"
 							data-slider-scale = "logarithmic"
 							data_slider-value = "1"
@@ -68,7 +77,7 @@
 							<p class="text-right">
 							<b >Object Resolution: </b><b id='object_res_display'></b>
 							<br>
-							<b>Spot Size: </b><b id='spot_size'></b>
+							<b>Spot Diameter: </b><b id='spot_size'></b>
 							</p>
 							
 							
@@ -76,8 +85,8 @@
 					</div>
 					
 				</div>
-				<div class="canvas_col col-lg-6 col-md-6 col-sm-5 col-xs-12 " >
-					<canvas id="canvas" width="350" height="350">
+				<div class="canvas_col col-lg-6 col-md-6 col-sm-12 col-xs-12 " >
+					<canvas id="canvas" width="300" height="300">
 					Sorry, your browser doesn't support the &lt;canvas&gt; element.
 				</div>
 			</div>

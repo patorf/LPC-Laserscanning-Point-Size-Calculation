@@ -1,22 +1,23 @@
-var distance = 0
-var resolution = 0 // mm @10m
+var distance = 20
+var resolution = 10 // mm @10m
 var selectet_scanner_id = null;
 
 
 
 var resolution_changed = function(event) {
+
     //console.log('resolution_changed')
     resolution = event.value.newValue;
-    $('#reolution_display').text(' : '+ event.value.newValue) 
+    $('#resolution_display').text(' : '+ event.value.newValue) 
     redraw_canvas();
 }
 var distace_changed = function(event) {
     distance = event.value.newValue;
     $('#distance_display').text(' : ' + event.value.newValue )
+  
     redraw_canvas();
 }
 $('#scanner_selection').on('change', function() {
-
     selectet_scanner_id = Number($(this).find(":selected").val());
     update_scanner_view()
 });
@@ -60,19 +61,26 @@ var update_scanner_view = function() {
     current_scanner = get_current_scanner()
     if (current_scanner["available resolutioin @10m [mm]"]) {
 
+    	lowest_resolution = current_scanner["available resolutioin @10m [mm]"].slice(-1)[0]
+
         //resolution_slider.bootstrapSlider("refresh");
         resolution_slider.bootstrapSlider('destroy');
         resolution_slider.slider({
             ticks: current_scanner["available resolutioin @10m [mm]"],
-
             ticks_snap_bounds: 400,
             scale: 'logarithmic',
-            value: 0
+            value: lowest_resolution
+           
         }).on('change', resolution_changed);
+
     }
+
+
 }
 $.each(scanner_db, function(index, val) {
-    $("#scanner_selection").append($("<option />").val(val.id).text(val.name));
+    $("#scanner_selection").append($("<option />")
+    	.val(val.id)
+    	.text(val.company + " - " + val.name));
 });
 
 //var circle_size = 10;
@@ -82,7 +90,7 @@ var resolution_slider = $("#resolution_slider").bootstrapSlider()
 var distance_slider = $("#distance_slider").bootstrapSlider()
     .on('change', distace_changed)
 
-distance_slider.bootstrapSlider('setValue', distance)
+
 
 function update_result_labels(res_m,spot_size_m) {
 	$('#object_res_display').text((res_m*100).toFixed(2)+ " cm")
@@ -91,6 +99,7 @@ function update_result_labels(res_m,spot_size_m) {
 
 var redraw_canvas = function() {
     var c = document.getElementById("canvas");
+
 
     //aspect ration from canvas to maximal diameter of a spot
     canvas_size_to_distance = c.width / calc_spotSize_at_distance(150)
@@ -142,5 +151,17 @@ var redraw_canvas = function() {
             }
         }
     }
+}
+
+
+
+if (scanner_db.length == 1){
+	
+	selectet_scanner_id
+	$('#scanner_selection').val(1).change()
+	lowest_resolution = scanner_db[0]["available resolutioin @10m [mm]"].slice(-1)[0]
+	distance_slider.bootstrapSlider('setValue', distance,false,true)
+   	resolution_slider.bootstrapSlider('setValue',lowest_resolution,true,true)
 
 }
+

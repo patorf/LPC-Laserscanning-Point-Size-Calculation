@@ -7,7 +7,8 @@ var scanner_db= [{
 "available resolutioin @10m [mm]": [0.8,1.6,3.1,6.3,12.5,25,50],
 "step_size": null
 },
-{
+
+/*{
 "id": 2,
 "name": "Focus3d",
 "company": "Faro",
@@ -17,7 +18,7 @@ var scanner_db= [{
 "step_size" : 0.009 //degree
 
 
-}
+}*/
 
 
 
