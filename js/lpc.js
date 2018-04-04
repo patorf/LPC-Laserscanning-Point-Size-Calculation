@@ -19,7 +19,9 @@ var distace_changed = function(event) {
 }
 $('#scanner_selection').on('change', function() {
     selectet_scanner_id = Number($(this).find(":selected").val());
+	
     update_scanner_view()
+	update_result_labels()
 });
 var calc_spotSize_at_distance = function(dist) {
     //Strahldivergenz nach Spotgröße am Objekt umrechnen
